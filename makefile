@@ -10,6 +10,8 @@ $(TARGET): $(OBJ_FILES)
 	mpic++ $^ -o $(TARGET)
 $(OBJ)/main.o: main.cpp
 	mpic++ -c $< -o $@
+$(OBJ)/process.o: process.cpp process.h
+	mpic++ -c $< -o $@
 create_directory: 
 	@mkdir -p $(OBJ)
 clean:

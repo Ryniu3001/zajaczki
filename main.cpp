@@ -5,7 +5,7 @@
 
 using namespace std;
 
-# include "mpi.h"
+# include "process.h"
 
 int main ( int argc, char *argv[] );
 
@@ -13,27 +13,18 @@ int main ( int argc, char *argv[] )
 
 {
   int id;
-  int p;
-//
-//  Initialize MPI.
-//
+  int size;
+
   MPI::Init ( argc, argv );
-//
-//  Get the number of processes.
-//
-  p = MPI::COMM_WORLD.Get_size ( );
-//
-//  Get the individual process ID.
-//
+  size = MPI::COMM_WORLD.Get_size ( );
   id = MPI::COMM_WORLD.Get_rank ( );
-//
-//  Every process prints a hello.
-//
-  printf("Process %d says Hello World!\n",id);
-  //cout << "  Process " << id << " says 'Hello, world!'" << endl;
-//
-//  Terminate MPI.
-//
+  Process p;
+  
+	  p.broadcast(0);
+
+  
+  //printf("Process %d says Hello World!\n",id);
+
   MPI::Finalize ( );
   return 0;
 }
