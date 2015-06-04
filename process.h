@@ -2,19 +2,19 @@
 #define process_h
 
 #include <algorithm>
-# include "mpi.h"
-
-struct Message {
-	int polana;
-	int clock;
-};
+#include <mpi.h>
+#include "lamport.h"
+#include "helpers.h"
+#include <stdlib.h>
 
 class Process
 {
 private:
-	int clock;      // wartosc zegara lamporta
+	int id;
 public:
-	Process();
+	Lamport *lamport;
+	Type type;
+	Process(int id, Type type, int polanyNumber);
 	void broadcast(int root);
 	void receiveAny();
 	void send(int receiver, int tag);

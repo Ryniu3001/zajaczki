@@ -1,31 +1,27 @@
-# include <cstdlib>
-# include <iostream>
-# include <iomanip>
-# include <ctime>
+#include "helpers.h"
+#include "process.h"
 
 using namespace std;
 
-# include "process.h"
+int main ( int argc, char *argv[] ) {
+  float N = 0.1; // procent niedzwiedzi
+  float Z = 0.9; // procent zajaczkow
+  int P = 20; // liczba polan
+  int S = 15; // pojemnosc polany
 
-int main ( int argc, char *argv[] );
+  MPI::Init (argc, argv);
+  int size = MPI::COMM_WORLD.Get_size();
+  int id = MPI::COMM_WORLD.Get_rank();
+  Process *p;
 
-int main ( int argc, char *argv[] )
+  if(id < ceil(size*N)) {
+    p = new Process(id, Niedzwiedz, P);
+  } else {
+    p = new Process(id, Zajac, P);
+  }
+	p->broadcast(0);
 
-{
-  int id;
-  int size;
 
-  MPI::Init ( argc, argv );
-  size = MPI::COMM_WORLD.Get_size ( );
-  id = MPI::COMM_WORLD.Get_rank ( );
-  Process p;
-  
-	  p.broadcast(0);
-
-  
-  //printf("Process %d says Hello World!\n",id);
-
-  MPI::Finalize ( );
+  MPI::Finalize();
   return 0;
 }
-
