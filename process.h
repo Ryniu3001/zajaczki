@@ -11,22 +11,25 @@ class Process
 {
 private:
 	int id;
+	int bears; 	//liczba niedzwiedzi ubiegajaca sie o wejscie na polane
 public:
 	Lamport *lamport;
 	int polanasId;
 	Type type;
 	int worldSize;
+	int responds;
 	bool partying;
 	Process(int id, Type type, int polanyNumber, int worldSize);
 	void broadcast(int root);
 	void receiveAny();
 	void send(int receiver, int tag, Message msg);
 	void receive(int sender, int tag);
+	void respond(int receiver, int polana);
 	void randPolana(int number);
 	void iWannaParty();
-	bool canEnterCriticalSection(); // TODO
-	void enterCriticalSection(); // TODO
-	void leaveCriticalSection(); // TODO
+	bool canEnterCriticalSection(); 
+	void enterCriticalSection(); 
+	void leaveCriticalSection(); 
 };
 
 #endif

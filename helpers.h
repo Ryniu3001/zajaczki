@@ -7,7 +7,8 @@
 #include <ctime>
 #include <math.h>
 
-enum Type {Niedzwiedz, Zajac};
+enum Type {Niedzwiedz = 4, Zajac = 1};
+enum MsgTag {Request, AnswerRequest, AnswerPermit, Release};
 
 struct Message {
 	int polana;
@@ -15,5 +16,7 @@ struct Message {
 	int processId;
 	Type type;
 };
+
+const int S = 4; // pojemnosc polany
 
 #endif
