@@ -13,12 +13,20 @@ private:
 	int id;
 public:
 	Lamport *lamport;
+	int polanasId;
 	Type type;
-	Process(int id, Type type, int polanyNumber);
+	int worldSize;
+	bool partying;
+	Process(int id, Type type, int polanyNumber, int worldSize);
 	void broadcast(int root);
 	void receiveAny();
-	void send(int receiver, int tag);
+	void send(int receiver, int tag, Message msg);
 	void receive(int sender, int tag);
+	void randPolana(int number);
+	void iWannaParty();
+	bool canEnterCriticalSection(); // TODO
+	void enterCriticalSection(); // TODO
+	void leaveCriticalSection(); // TODO
 };
 
 #endif

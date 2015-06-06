@@ -1,16 +1,21 @@
 #include "lamport.h"
 
-void Lamport::addProcess(Demand t, int polanasId){
+void Lamport::addProcess(Demand *t, int polanasId){
   for (int i = 0; i < polany[polanasId].size(); i++) {
-    if(polany[polanasId][i].clock < t.clock) {
+    if(polany[polanasId][i]->clock < t->clock) {
       polany[polanasId].insert(polany[polanasId].begin()+i, t);
     }
   }
 }
 
+void Lamport::addMe(int polanasId, Type type) {
+  Demand *demand = new Demand(this->id,this->clock,type);
+  addProcess(demand, polanasId);
+}
+
 void Lamport::removeProcess(int id, int polanasId) {
   for(int i=0;i<polany[polanasId].size();i++) {
-    if(polany[polanasId][i].id == id) {
+    if(polany[polanasId][i]->id == id) {
       polany[polanasId].erase(polany[polanasId].begin() + i);
       break;
     }
@@ -19,7 +24,7 @@ void Lamport::removeProcess(int id, int polanasId) {
 
 bool Lamport::checkPosition(int polanasId) {
   if(polany[polanasId].size()>0) {
-    return polany[polanasId][0].id == id ? true : false;
+    return polany[polanasId][0]->id == id ? true : false;
   }
 }
 
@@ -27,6 +32,6 @@ Lamport::Lamport(int id, int polanyNumber) {
   this->id = id;
   this->clock = 0;
   for (int i = 0; i < polanyNumber; i++) {
-    this->polany.push_back(vector<Demand>(0));
+    this->polany.push_back(vector<Demand *>(0));
   }
 }
