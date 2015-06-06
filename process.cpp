@@ -108,7 +108,7 @@ bool Process::canEnterCriticalSection() {
 }
 
 void Process::enterCriticalSection() {
-	printf("%d Zajaczek %d wchodzi na polane %d",lamport->clock,this->id, polanasId);
+	printf("%d Zajaczek %d wchodzi na polane %d\n",lamport->clock,this->id, polanasId);
 	int superDrinks = this->bears;
 	int misieNaPolanie = 0;
 	for (int i = 0; i < lamport->polany[polanasId].size(); i++){
@@ -117,14 +117,14 @@ void Process::enterCriticalSection() {
 		if ((lamport->polany[polanasId][i]->id == this->id)
 			&& (this->type = Zajac) && (this->bears > 0))
 		{
-			printf("%d Zajaczek %d przynosi dodatkowa flaszke!",lamport->clock,this->id);
+			printf("%d Zajaczek %d przynosi dodatkowa flaszke!\n",lamport->clock,this->id);
 			this->bears -= 1;
 		}		
 	}
 	if (this->bears > 0)
-		printf("%d Za malo zajaczkow zeby przyniesc dodatkowe flaszki!",lamport->clock);
+		printf("%d Za malo zajaczkow zeby przyniesc dodatkowe flaszki!\n",lamport->clock);
 	if (superDrinks > (4 * misieNaPolanie))
-		printf("%d Za duzo dodatkowych flaszek! Misie beda zjadac zajaczki !!",lamport->clock);	
+		printf("%d Za duzo dodatkowych flaszek! Misie beda zjadac zajaczki !!\n",lamport->clock);	
 }
 
 void Process::leaveCriticalSection() {

@@ -6,7 +6,7 @@ using namespace std;
 int main ( int argc, char *argv[] ) {
   float N = 0.2; // procent niedzwiedzi
   float Z = 0.8; // procent zajaczkow
-  int P = 3; // liczba polan
+  int P = 2; // liczba polan
   int ITER = 10; // liczba iteracji
 
   MPI::Init (argc, argv);

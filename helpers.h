@@ -17,6 +17,6 @@ struct Message {
 	Type type;
 };
 
-const int S = 10; // pojemnosc polany
+const int S = 5; // pojemnosc polany
 
 #endif
