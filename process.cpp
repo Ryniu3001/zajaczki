@@ -104,7 +104,7 @@ bool Process::canEnterCriticalSection() {
 			printf("%d Proces %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Nie zmieści się\n",this->lamport->clock, this->id,polanasId,(int)lamport->polany[polanasId].size());
 		return true;
 	}
-	printf("%d Za malo odzpowiedzi. Proces %d\n",lamport->clock,this->id); //Tylko w celach debugu
+	//printf("%d Za malo odzpowiedzi. Proces %d\n",lamport->clock,this->id); //Tylko w celach debugu
 	return false;
 }
 
