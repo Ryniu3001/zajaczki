@@ -45,11 +45,11 @@ void Process::receiveAny(){
 		respond(status.Get_source(), msg.polana);
 	}else if (status.Get_tag() == AnswerPermit)			//odpowiedz na zadanie z zezwoleniem
 	{
-		printf("%d @%d Process %d received answer-permit from %d, polana: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
+		printf("%d @%d Process %d received answer-permit from %d, polana: %d Received Answers: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana, responds);
 	}
 	else if(status.Get_tag() == AnswerRequest)			//odpowiedz na zadanie z wlasnym zadaniem
 	{
-		printf("%d @%d Process %d received answer-request from %d, polana: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
+		printf("%d @%d Process %d received answer-request from %d, polana: %d Received Answers: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana,responds);
 		Demand *demand = new Demand(msg.processId, msg.clock, msg.type);
 		this->lamport->addProcess(demand, msg.polana);
 		if (msg.type == Niedzwiedz)
@@ -104,6 +104,7 @@ bool Process::canEnterCriticalSection() {
 			printf("%d Proces %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Nie zmieści się\n",this->lamport->clock, this->id,polanasId,(int)lamport->polany[polanasId].size());
 		return true;
 	}
+	printf("%d Za malo odzpowiedzi. Proces %d\n",lamport->clock,this->id); //Tylko w celach debugu
 	return false;
 }
 

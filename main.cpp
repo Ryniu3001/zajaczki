@@ -21,7 +21,7 @@ int main ( int argc, char *argv[] ) {
   
   int counter = 0;
   bool CHOOSE_PARTY = true;
-  while(counter < 20) {
+  while(counter < 2) {
     if(CHOOSE_PARTY) {
       counter++;
       CHOOSE_PARTY = false;
@@ -37,7 +37,6 @@ int main ( int argc, char *argv[] ) {
       p->responds = 0;
     }
   }
-
   MPI::Finalize();
   return 0;
 }
