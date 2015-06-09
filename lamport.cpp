@@ -47,8 +47,8 @@ return polany[polanasId][0]->id == id ? true : false;
 
 bool Lamport::checkPosition(int polanasId, int id){			//Sprawdza czy proces moze wejsc na dana polane
   unsigned int index = 0;
-  int i = polany[polanasId][index]->type;
-  while (i <= S) {
+  int i = 0;
+  while (i <= S && index < polany[polanasId].size()) {
     if((i + polany[polanasId][index]->type) <= S) {
       if (id == polany[polanasId][index]->id) {
         return true;
