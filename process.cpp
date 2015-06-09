@@ -32,11 +32,11 @@ void Process::receiveAny(){
 	MPI::Status status;
 	MPI::COMM_WORLD.Recv(&msg, sizeof(struct Message), MPI_BYTE, MPI::ANY_SOURCE, MPI::ANY_TAG, status);
 	this->lamport->clock = std::max(this->lamport->clock,msg.clock) + 1;
-	
+
 	if ((status.Get_tag() == AnswerRequest)
 		|| (status.Get_tag() == AnswerPermit) && (msg.polana == polanasId))
 		responds++;
-	
+
 	if (status.Get_tag() == Request)
 	{
 		printf("%d @%d Process %d received request from %d, polana: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
@@ -52,14 +52,12 @@ void Process::receiveAny(){
 		printf("%d @%d Process %d received answer-request from %d, polana: %d Received Answers: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana,responds);
 		Demand *demand = new Demand(msg.processId, msg.clock, msg.type);
 		this->lamport->addProcess(demand, msg.polana);
-		if (msg.type == Niedzwiedz)
-			this->bears++;
-		
+
 	}else if (status.Get_tag() == Release){
 		printf("%d @%d Process %d received release message from %d, polana: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
 		lamport->removeProcess(msg.processId,msg.polana);
 	}
-	
+
 }
 
 void Process::send(int receiver,int tag, Message msg){
@@ -68,7 +66,7 @@ void Process::send(int receiver,int tag, Message msg){
 		printf("%d @%d Send request from %d to %d, polana: %d\n",this->lamport->clock,this->type, MPI::COMM_WORLD.Get_rank(), receiver, msg.polana);
 	else if (tag == AnswerRequest)
 		printf("%d Respond for request from process %d Process: %d Polana: %d\n",this->lamport->clock,receiver,this->id,msg.polana);
-		
+
 }
 
 void Process::receive(int sender, int tag){
@@ -98,40 +96,45 @@ void Process::randPolana(int number) {
 bool Process::canEnterCriticalSection() {
 	if (this->responds == MPI::COMM_WORLD.Get_size() - 1)
 	{
-		if (lamport->checkPosition(polanasId))
-			printf("%d Proces %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Wchodzi\n",this->lamport->clock, this->id,polanasId,(int)lamport->polany[polanasId].size());
-		else
-			printf("%d Proces %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Nie zmieści się\n",this->lamport->clock, this->id,polanasId,(int)lamport->polany[polanasId].size());
-		return true;
+		if (lamport->checkPosition(polanasId, this->id)) {
+			printf("%d @%d %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Wchodzi\n",this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
+			return true;
+		}
+		else {
+			printf("%d @%d %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Nie zmieści się\n", this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
+			return false;
+		}
 	}
 	//printf("%d Za malo odzpowiedzi. Proces %d\n",lamport->clock,this->id); //Tylko w celach debugu
 	return false;
 }
 
 void Process::enterCriticalSection() {
-	printf("%d Zajaczek %d wchodzi na polane %d\n",lamport->clock,this->id, polanasId);
-	int superDrinks = this->bears;
-	int misieNaPolanie = 0;
-	for (int i = 0; i < lamport->polany[polanasId].size(); i++){
-		if (lamport->polany[polanasId][i]->type == Niedzwiedz)
-			misieNaPolanie++;
-		if ((lamport->polany[polanasId][i]->id == this->id)
-			&& (this->type = Zajac) && (this->bears > 0))
-		{
-			printf("%d Zajaczek %d przynosi dodatkowa flaszke!\n",lamport->clock,this->id);
-			this->bears -= 1;
-		}		
+	printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
+	if(this->type != Niedzwiedz) {
+		int misieNaPolanie = 0;
+		for (int i = 0; i < lamport->polany[polanasId].size(); i++){
+			if (lamport->checkPosition(polanasId, lamport->polany[polanasId][i]->id) && lamport->polany[polanasId][i]->type == Niedzwiedz)
+				misieNaPolanie++;
+		}
+		int i = 0;
+		int liczbaZajaczkowPrzedeMna = 0;
+		while(lamport->polany[polanasId][i]->id != this->id) {
+			if(lamport->polany[polanasId][i]->type == Zajac) {
+				liczbaZajaczkowPrzedeMna++;
+				break;
+			}
+			i++;
+		}
+		if(liczbaZajaczkowPrzedeMna + i < misieNaPolanie) {
+			printf("%s%d @%d %d przynosi alko na polane %d.\033[0m\n",KGRN , lamport->clock, this->type, this->id, polanasId);
+		}
 	}
-	if (this->bears > 0)
-		printf("%d Za malo zajaczkow zeby przyniesc dodatkowe flaszki!\n",lamport->clock);
-	if (superDrinks > (4 * misieNaPolanie))
-		printf("%d Za duzo dodatkowych flaszek! Misie beda zjadac zajaczki !!\n",lamport->clock);	
 }
 
 void Process::leaveCriticalSection() {
-	this->bears = 0;
 	lamport->removeProcess(this->id, this->polanasId);
-	Message msg;	
+	Message msg;
 	msg.type = this->type;
 	msg.polana = polanasId;
 	msg.processId = this->id;
@@ -141,6 +144,7 @@ void Process::leaveCriticalSection() {
 			send(i,Release,msg);
 		}
 	}
+	printf("%s%d @%d %d wychodzi z polany %d \033[0m\n",KYEL, lamport->clock,this->type, this->id, polanasId);
 }
 
 void Process::iWannaParty() {

@@ -11,7 +11,6 @@ class Process
 {
 private:
 	int id;
-	int bears; 	//liczba niedzwiedzi ubiegajaca sie o wejscie na polane
 public:
 	Lamport *lamport;
 	int polanasId;
@@ -27,9 +26,9 @@ public:
 	void respond(int receiver, int polana);
 	void randPolana(int number);
 	void iWannaParty();
-	bool canEnterCriticalSection(); 
-	void enterCriticalSection(); 
-	void leaveCriticalSection(); 
+	bool canEnterCriticalSection();
+	void enterCriticalSection();
+	void leaveCriticalSection();
 };
 
 #endif

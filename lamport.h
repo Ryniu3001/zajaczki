@@ -23,7 +23,7 @@ public:
   void addProcess(Demand *p, int polanasId);
   void addMe(int polanasId, Type type);
   void removeProcess(int id, int polanasId);
-  bool checkPosition(int polanasId);
+  bool checkPosition(int polanasId, int id);
   Lamport(int id, int polanyNumber);
 };
 

@@ -4,10 +4,6 @@
 using namespace std;
 
 int main ( int argc, char *argv[] ) {
-  float N = 0.2; // procent niedzwiedzi
-  float Z = 0.8; // procent zajaczkow
-  int P = 2; // liczba polan
-  int ITER = 10; // liczba iteracji
 
   MPI::Init (argc, argv);
   int size = MPI::COMM_WORLD.Get_size();
@@ -18,7 +14,7 @@ int main ( int argc, char *argv[] ) {
   } else {
     p = new Process(id, Zajac, P, size);
   }
-  
+
   int counter = 0;
   bool CHOOSE_PARTY = true;
   while(counter < 2) {
