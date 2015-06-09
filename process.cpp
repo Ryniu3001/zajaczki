@@ -39,22 +39,26 @@ void Process::receiveAny(){
 
 	if (status.Get_tag() == Request)
 	{
-		printf("%d @%d Process %d received request from %d, polana: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
+		printf("%d @%d Process %d received request from %d, polana: %d\n",
+		       this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
 		Demand *demand = new Demand(msg.processId, msg.clock, msg.type);
 		this->lamport->addProcess(demand, msg.polana);
 		respond(status.Get_source(), msg.polana);
 	}else if (status.Get_tag() == AnswerPermit)			//odpowiedz na zadanie z zezwoleniem
 	{
-		printf("%d @%d Process %d received answer-permit from %d, polana: %d Received Answers: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana, responds);
+		printf("%d @%d Process %d received answer-permit from %d, polana: %d Received Answers: %d\n",
+		       this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana, responds);
 	}
 	else if(status.Get_tag() == AnswerRequest)			//odpowiedz na zadanie z wlasnym zadaniem
 	{
-		printf("%d @%d Process %d received answer-request from %d, polana: %d Received Answers: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana,responds);
+		printf("%d @%d Process %d received answer-request from %d, polana: %d Received Answers: %d\n",
+		       this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana,responds);
 		Demand *demand = new Demand(msg.processId, msg.clock, msg.type);
 		this->lamport->addProcess(demand, msg.polana);
 
 	}else if (status.Get_tag() == Release){
-		printf("%d @%d Process %d received release message from %d, polana: %d\n",this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
+		printf("%d @%d Process %d received release message from %d, polana: %d\n",
+		       this->lamport->clock,this->type,MPI::COMM_WORLD.Get_rank(), status.Get_source(), msg.polana);
 		lamport->removeProcess(msg.processId,msg.polana);
 	}
 
@@ -63,9 +67,11 @@ void Process::receiveAny(){
 void Process::send(int receiver,int tag, Message msg){
 	MPI::COMM_WORLD.Send(&msg, sizeof(struct Message), MPI_BYTE, receiver, tag);
 	if (tag == Request)
-		printf("%d @%d Send request from %d to %d, polana: %d\n",this->lamport->clock,this->type, MPI::COMM_WORLD.Get_rank(), receiver, msg.polana);
+		printf("%d @%d Send request from %d to %d, polana: %d\n",
+		       this->lamport->clock,this->type, MPI::COMM_WORLD.Get_rank(), receiver, msg.polana);
 	else if (tag == AnswerRequest)
-		printf("%d Respond for request from process %d Process: %d Polana: %d\n",this->lamport->clock,receiver,this->id,msg.polana);
+		printf("%d @%d Process %d send respond for request from process %d Polana: %d\n",
+		       this->lamport->clock,this->type,this->id,receiver,msg.polana);
 
 }
 
@@ -97,11 +103,13 @@ bool Process::canEnterCriticalSection() {
 	if (this->responds == MPI::COMM_WORLD.Get_size() - 1)
 	{
 		if (lamport->checkPosition(polanasId, this->id)) {
-			printf("%d @%d %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Wchodzi\n",this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
+			printf("%d @%d %d otrzymal wszystkie odpowiedzi | Chetnych na impreze na polanie %d jest %d -> Wchodzi\n",
+			       this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
 			return true;
 		}
 		else {
-			printf("%d @%d %d otrzymal wszystkie odpowiedzi || Chetnych na impreze na polanie %d jest %d -> Nie zmieści się\n", this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
+			printf("%d @%d %d otrzymal wszystkie odpowiedzi | Chetnych na impreze na polanie %d jest %d -> Nie zmieści się\n",
+			       this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
 			return false;
 		}
 	}
