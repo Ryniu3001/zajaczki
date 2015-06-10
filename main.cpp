@@ -33,9 +33,11 @@ int main ( int argc, char *argv[] ) {
       p->responds = 0;
       CHOOSE_PARTY = true;
     }
-    
+
 
   }
+
+  delete p;
   MPI::Finalize();
   return 0;
 }

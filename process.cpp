@@ -171,15 +171,12 @@ void Process::enterCriticalSection() {
 		}
 		if(misieNaPolanie > 0 && liczbaZajaczkowPrzedeMna + i - 1 < misieNaPolanie) {
 			printf("%s%d @%d %d przynosi alko na polane %d.\033[0m\n",KGRN , lamport->clock, this->type, this->id, polanasId);
-
-			printf("%d @%d %d | %d mis(ie) na polanie %d \n",lamport->clock, this->type, this->id, misieNaPolanie, polanasId);
-
 		}
 	} else {
 		if(isZajacAtTheParty()) {
 			printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
 		} else {
-			printf("%s%d Brak zajacow na polanie %d \033[0m\n",KMAG, lamport->clock, polanasId);
+			printf("%s%d @%d %d Brak zajacow na polanie %d \033[0m\n",KMAG, lamport->clock, this->type, this->id, polanasId);
 		}
 	}
 }
