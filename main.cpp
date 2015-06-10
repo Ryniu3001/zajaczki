@@ -31,8 +31,9 @@ int main ( int argc, char *argv[] ) {
       p->enterCriticalSection();
       p->leaveCriticalSection();
       p->responds = 0;
+      CHOOSE_PARTY = true;
     }
-    CHOOSE_PARTY = true;
+    
 
   }
   MPI::Finalize();

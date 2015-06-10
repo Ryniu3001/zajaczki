@@ -120,9 +120,6 @@ bool Process::canEnterCriticalSection() {
 	if (this->responds == MPI::COMM_WORLD.Get_size() - 1)
 	{
 		if (lamport->checkPosition(polanasId, this->id)) {
-			if(this->type == Niedzwiedz && !isZajacAtTheParty()) {
-				return false;
-			}
 			#ifdef DEBUG
 			printf("%d @%d %d otrzymal wszystkie odpowiedzi | Chetnych na impreze na polanie %d jest %d -> Wchodzi\n",
 			       this->lamport->clock, this->type, this->id,polanasId,(int)lamport->polany[polanasId].size());
