@@ -173,9 +173,8 @@ void Process::enterCriticalSection() {
 			printf("%s%d @%d %d przynosi alko na polane %d.\033[0m\n",KGRN , lamport->clock, this->type, this->id, polanasId);
 		}
 	} else {
-		if(isZajacAtTheParty()) {
-			printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
-		} else {
+		printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
+		if(!isZajacAtTheParty()) {
 			printf("%s%d @%d %d Brak zajacow na polanie %d \033[0m\n",KMAG, lamport->clock, this->type, this->id, polanasId);
 		}
 	}

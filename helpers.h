@@ -29,10 +29,10 @@ struct Message {
 	Type type;
 };
 
-const int S = 20; // pojemnosc polany
+const int S = 30; // pojemnosc polany
 const float N = 0.2; // procent niedzwiedzi
 const float Z = 0.8; // procent zajaczkow
-const int P = 3; // liczba polan
+const int P = 4; // liczba polan
 const int ITER = 10; // liczba iteracji
 
 #endif
