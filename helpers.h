@@ -20,7 +20,7 @@ enum MsgTag {Request, AnswerRequest, AnswerPermit, Release};
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
-#define DEBUG
+//#define DEBUG
 
 struct Message {
 	int polana;

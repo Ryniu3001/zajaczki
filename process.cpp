@@ -141,11 +141,8 @@ bool Process::canEnterCriticalSection() {
 bool Process::isZajacAtTheParty() {
 
 	for(int i=0;i<lamport->polany[polanasId].size();i++) {
-		if(lamport->polany[polanasId][i]->type == Zajac) {
+		if(lamport->polany[polanasId][i]->type == Zajac && lamport->checkPosition(polanasId, lamport->polany[polanasId][i]->id)) {
 			return true;
-		}
-		if(lamport->polany[polanasId][i]->id == this->id) {
-			return false;
 		}
 	}
 
@@ -153,8 +150,9 @@ bool Process::isZajacAtTheParty() {
 }
 
 void Process::enterCriticalSection() {
-	printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
+
 	if(this->type != Niedzwiedz) {
+		printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
 		int misieNaPolanie = 0;
 		for (int i = 0; i < lamport->polany[polanasId].size(); i++){
 			if (lamport->checkPosition(polanasId, lamport->polany[polanasId][i]->id) && lamport->polany[polanasId][i]->type == Niedzwiedz) {
@@ -176,6 +174,12 @@ void Process::enterCriticalSection() {
 
 			printf("%d @%d %d | %d mis(ie) na polanie %d \n",lamport->clock, this->type, this->id, misieNaPolanie, polanasId);
 
+		}
+	} else {
+		if(isZajacAtTheParty()) {
+			printf("%s%d @%d %d wchodzi na polane %d \033[0m\n",KCYN, lamport->clock,this->type, this->id, polanasId);
+		} else {
+			printf("%s%d Brak zajacow na polanie %d \033[0m\n",KMAG, lamport->clock, polanasId);
 		}
 	}
 }
