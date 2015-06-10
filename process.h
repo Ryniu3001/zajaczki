@@ -27,6 +27,7 @@ public:
 	void randPolana(int number);
 	void iWannaParty();
 	bool canEnterCriticalSection();
+	bool isZajacAtTheParty();
 	void enterCriticalSection();
 	void leaveCriticalSection();
 };

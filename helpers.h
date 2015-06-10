@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <ctime>
 #include <math.h>
+#include <pthread.h>
 
 enum Type {Niedzwiedz = 4, Zajac = 1};
 enum MsgTag {Request, AnswerRequest, AnswerPermit, Release};
@@ -19,6 +20,8 @@ enum MsgTag {Request, AnswerRequest, AnswerPermit, Release};
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
+//#define DEBUG
+
 struct Message {
 	int polana;
 	int clock;
@@ -26,10 +29,10 @@ struct Message {
 	Type type;
 };
 
-const int S =3; // pojemnosc polany
+const int S =10; // pojemnosc polany
 const float N = 0.2; // procent niedzwiedzi
 const float Z = 0.8; // procent zajaczkow
-const int P = 2; // liczba polan
+const int P = 3; // liczba polan
 const int ITER = 10; // liczba iteracji
 
 #endif

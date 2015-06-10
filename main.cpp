@@ -8,6 +8,7 @@ int main ( int argc, char *argv[] ) {
   MPI::Init (argc, argv);
   int size = MPI::COMM_WORLD.Get_size();
   int id = MPI::COMM_WORLD.Get_rank();
+  srand(time(NULL) + id);
   Process *p;
   if(id < ceil(size*N)) {
     p = new Process(id, Niedzwiedz, P, size);
@@ -17,9 +18,8 @@ int main ( int argc, char *argv[] ) {
 
   int counter = 0;
   bool CHOOSE_PARTY = true;
-  while(counter < 2) {
+  while(counter < 4) {
     if(CHOOSE_PARTY) {
-      counter++;
       CHOOSE_PARTY = false;
       p->randPolana(P);
       p->iWannaParty();
@@ -27,11 +27,13 @@ int main ( int argc, char *argv[] ) {
 
     p->receiveAny();
     if(!CHOOSE_PARTY && p->canEnterCriticalSection()){
+      counter++;
       p->enterCriticalSection();
       p->leaveCriticalSection();
-      CHOOSE_PARTY = true;
       p->responds = 0;
     }
+    CHOOSE_PARTY = true;
+
   }
   MPI::Finalize();
   return 0;
