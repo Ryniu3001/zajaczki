@@ -20,6 +20,7 @@ enum MsgTag {Request, AnswerRequest, AnswerPermit, Release};
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
+
 //#define DEBUG
 
 struct Message {
@@ -34,5 +35,6 @@ const float N = 0.2; // procent niedzwiedzi
 const float Z = 0.8; // procent zajaczkow
 const int P = 4; // liczba polan
 const int ITER = 10; // liczba iteracji
+#define PARTIES 4
 
 #endif

@@ -18,7 +18,7 @@ int main ( int argc, char *argv[] ) {
 
   int counter = 0;
   bool CHOOSE_PARTY = true;
-  while(counter < 4) {
+  while(counter < PARTIES) {
     if(CHOOSE_PARTY) {
       CHOOSE_PARTY = false;
       p->randPolana(P);
